@@ -9,7 +9,9 @@ class Game extends React.Component {
         this.state = {
             board: new Minesweeper.Board(10, 10)
         }
-        this.updateGame = this.updateGame.bind(this)
+        this.updateGame = this.updateGame.bind(this);
+        this.checkGameStatus = this.checkGameStatus.bind(this);
+        this.restartGame = this.restartGame.bind(this);
     }
 
     updateGame(tile, flagged) {
@@ -21,7 +23,44 @@ class Game extends React.Component {
         this.setState({
             board: this.state.board
         })
+        
+    }
 
+    checkGameStatus(){
+        if(this.state.board.won()){
+            return this.endOfGame("You won!")
+        }
+        if(this.state.board.lost()){
+            return this.endOfGame("You lost :(")
+        }
+    }
+
+    endOfGame(content){
+        this.state.board.grid.map((row, idx) => {
+            return row.map((tile, idx2) => {
+                if (tile.bombed) {
+                    tile.explore();
+                    return tile;
+                }
+            })
+        })
+        return (
+            <div className="modal is-open">
+                <div className="modal-screen">
+                    
+                </div>
+                <div className="modal-overlay">
+                    <p>{content}</p>
+                    <button onClick={this.restartGame}>Play Again</button>
+                </div>
+            </div>
+        )
+    }
+
+    restartGame() {
+        this.setState({
+            board: new Minesweeper.Board(10, 10)
+        })
     }
 
     render() {
@@ -33,6 +72,7 @@ class Game extends React.Component {
                     <p>Alt+click to flag a tile.</p>
                 </div>
                 <Board board={this.state.board} updateGame={this.updateGame}/>
+                {this.checkGameStatus()}
             </div>
         )
     }
