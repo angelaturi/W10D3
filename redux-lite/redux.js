@@ -1,13 +1,7 @@
 class Store {
   constructor(rootReducer) {
     this.rootReducer = rootReducer;
-    this.state = {
-      name: "Joe",
-      role: "teacher",
-      hairColor: "brown",
-      eyeColor: "hazel",
-      favoriteMovie: "Avengers End Game"
-    };
+    this.state = this.rootReducer({}, "");
   }
 
   getState() {
@@ -18,6 +12,8 @@ class Store {
     this.state = this.rootReducer(this.state, action);
   }
 }
+
+const newStore = (...args) => new Store(...args);
 
 // let action = {
 //       type: "change favorite movie",
@@ -49,6 +45,7 @@ const combineReducers = (reducersObj) => {
   return (prevState, action) => {
     const nextState = {};
     Object.keys(reducersObj).forEach( (key) => {
+      debugger
       nextState[key] = reducersObj[key](prevState[key], action);
     });
     return nextState;
