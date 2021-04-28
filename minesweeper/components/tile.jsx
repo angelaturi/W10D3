@@ -5,6 +5,7 @@ class Tile extends React.Component{
         super(props)
         this.addClassNames = this.addClassNames.bind(this);
         this.addInnerContent = this.addInnerContent.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     addClassNames() {
@@ -21,9 +22,14 @@ class Tile extends React.Component{
         return classes.join(" ");
     }
 
+    handleClick(e) {
+        let flagged = e.altKey;
+        this.props.updateGame(this.props.tile, flagged);
+    }
+
     addInnerContent() {
         let numBombs = 0;
-        if(this.props.tile.bombed){
+        if(this.props.tile.bombed && this.props.tile.explored){
             return "💣";
         }
         if(this.props.tile.flagged){
@@ -41,7 +47,7 @@ class Tile extends React.Component{
 
     render() {
         return (
-            <div className={this.addClassNames()}>{this.addInnerContent()}</div>
+            <div className={this.addClassNames()} onClick={this.handleClick}>{this.addInnerContent()}</div>
         )
     }
 }

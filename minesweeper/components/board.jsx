@@ -30,7 +30,7 @@ class Board extends React.Component{
 
     render() {
         return(
-            <div class="row">
+            <div className="board">
                 {this.makeRows(this.props.board)}
             </div>
         )
