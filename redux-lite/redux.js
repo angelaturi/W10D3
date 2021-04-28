@@ -13,6 +13,10 @@ class Store {
   getState() {
     return Object.assign({}, this.state);
   }
+
+  dispatch(action) {
+    this.state = this.rootReducer(this.state, action);
+  }
 }
 
 // let action = {
@@ -40,3 +44,23 @@ class Store {
 //     return oldEyeColor;
 //   }
 // }
+
+const combineReducers = (reducersObj) => {
+  return (prevState, action) => {
+    const nextState = {};
+    Object.keys(reducersObj).forEach( (key) => {
+      nextState[key] = reducersObj[key](prevState[key], action);
+    });
+    return nextState;
+  }
+}
+
+const myNoiseReducer = (prevState = "peace and quiet", action) => {
+  switch(action.type) {
+    case "noisy action":
+      return action.noise;
+    default:
+      return prevState;
+  }
+};
+
