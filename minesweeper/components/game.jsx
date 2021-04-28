@@ -17,7 +17,14 @@ class Game extends React.Component {
 
     render() {
         return (
-            <Board board={this.state.board} updateGame={this.updateGame}/>
+            <div>
+                <div>
+                    <h1>Minesweeper</h1>
+                    <p>Click to explore a tile</p> 
+                    <p>Alt+click to flag a tile.</p>
+                </div>
+                <Board board={this.state.board} updateGame={this.updateGame}/>
+            </div>
         )
     }
 }
